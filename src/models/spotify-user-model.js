@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
     displayName: {type: mongoose.Schema.Types.String, required: true},
     email: {type:mongoose.Schema.Types.String, required: true, unique:true},
-    spotifyId: {type: mongoose.Schema.Types.String, required: true, unique: true} 
+    spotifyId: {type: mongoose.Schema.Types.String, required: true, unique: true} ,
+    image: {type: mongoose.Schema.Types.String}
 }, {timestamps: true})
 
 module.exports = mongoose.model('SpotifyUser', userSchema)
