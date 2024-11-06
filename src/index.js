@@ -1,11 +1,18 @@
 const express = require("express");
-const connectDB = require("./config/db.config");
-const spotifyUserRoute = require("./routes/spotify-user-route");
 const cookieParser = require("cookie-parser");
-const RedisStore = require("connect-redis").default;
 const session = require("express-session");
-const redisClient = require("./config/redis.config");
 
+//config
+const connectDB = require("./config/db.config");
+const RedisStore = require("connect-redis").default;
+const redisClient = require("./config/redis.config");
+const dotenv = require("dotenv");
+
+//routes
+const spotifyUserRoute = require("./routes/spotify-user-route");
+const postsRoute = require("./routes/posts-route");
+
+dotenv.config();
 const app = express();
 const PORT = 3000;
 
@@ -29,8 +36,10 @@ app.use(
     },
   })
 );
+//routes
+app.use("/api/v1", spotifyUserRoute);
+app.use("/api/v1/posts", postsRoute);
 
-app.use(spotifyUserRoute);
 app.get("/", (req, res) => {
   res.send("home");
 });

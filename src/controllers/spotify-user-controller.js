@@ -2,6 +2,7 @@ const UserModel = require("../models/spotify-user-model");
 const dotenv = require("dotenv");
 const requestAccessToken = require("../services/access-token-auth");
 const getProfile = require("../services/user-profile");
+const requestURL = require("../constants/request-url");
 
 dotenv.config();
 
@@ -16,12 +17,12 @@ async function redirect(req, res) {
 
   if (state && code) {
     try {
-      let userData = {};
+      let userData = null;
       try {
         const token = await requestAccessToken(
           code,
           state,
-          "http://localhost:3000/redirect"
+          `${requestURL}/api/v1/redirect`
         );
         //console.log(token);
         const userProfile = await getProfile(token);
@@ -36,23 +37,29 @@ async function redirect(req, res) {
       }
       //console.log(userProfile);
       if (userData) {
-        req.session.user = userData;
         const getUserId = await UserModel.findOne({
           spotifyId: userData.spotifyId,
         });
-
+        //console.log(userData);
+        req.session.user = userData;
         if (!getUserId) {
-          const newUser = new UserModel({ ...userData });
-          newUser.save();
+          try {
+            const newUser = new UserModel({ ...userData });
+            await newUser.save();
+            return res.send("Logged in");
+          } catch (error) {
+            res.send(error.message);
+          }
+          return;
         }
-        return res.send("Logged in");
+
+        return res.sendStatus(200);
       }
     } catch (err) {
-      console.error("Error during redirect:", err);
-      res.redirect("/login");
+      res.send(err.message);
     }
   } else {
-    res.redirect("/login");
+    res.redirect("/api/v1/login");
   }
 }
 

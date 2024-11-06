@@ -1,8 +1,6 @@
 const dotenv = require("dotenv");
 const generateRandomString = require("../utils/generate-random-string");
 const querystring = require("querystring");
-const requestAccessToken = require("../services/access-token-auth");
-const getProfile = require("../services/user-profile");
 dotenv.config();
 
 async function authUser(req, res, next) {
@@ -10,7 +8,7 @@ async function authUser(req, res, next) {
   const scope = "user-read-email user-read-private";
 
   if (await req.session.user) {
-    return res.send("Logged in session");
+    return next();
   }
 
   res.redirect(
@@ -19,7 +17,7 @@ async function authUser(req, res, next) {
         response_type: "code",
         client_id: process.env.SPOTIFY_CLIENT_ID,
         scope: scope,
-        redirect_uri: "http://localhost:3000/redirect",
+        redirect_uri: "http://localhost:3000/api/v1/redirect",
         state: state,
       })
   );
