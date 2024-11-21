@@ -25,6 +25,18 @@ class PostsController {
       res.send(err.message);
     }
   }
+
+  static async servePosts(req, res) {
+    try {
+      const user = req.session.user;
+      if (user) {
+        const allPosts = await UserPosts.find();
+        res.json(allPosts);
+      }
+    } catch (err) {
+      res.send(err.message);
+    }
+  }
 }
 
 module.exports = PostsController;

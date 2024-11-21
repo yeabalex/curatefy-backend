@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const PostAlgorithms = require("../utils/post-algorithms");
+const checkFollow = require("../utils/check-if-user-follows-another-user");
 
 const postSchema = new mongoose.Schema(
   {
@@ -16,7 +18,6 @@ const postSchema = new mongoose.Schema(
       items: [{ type: mongoose.Schema.Types.ObjectId, ref: "PostComment" }],
     },
     hashTags: [{ type: mongoose.Schema.Types.String }],
-    popularity: { type: mongoose.Schema.Types.Number, default: 0 },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -27,6 +28,17 @@ postSchema.virtual("likeCount").get(function () {
 
 postSchema.virtual("commentCount").get(function () {
   return this.comments.items.length;
+});
+
+postSchema.virtual("popularity").get(function () {
+  const nowInSeconds = Math.floor(Date.now() / 1000);
+  const postedInSeconds = Math.floor(this.createdAt.getTime() / 1000);
+  const secondsSincePosted = nowInSeconds - postedInSeconds;
+
+  return (
+    this.likes.users.length +
+    (this.comments.items.length * 1.2) / secondsSincePosted
+  );
 });
 
 module.exports = mongoose.model("UserPosts", postSchema);

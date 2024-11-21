@@ -1,13 +1,21 @@
 const express = require("express");
-const { redirect } = require("../controllers/spotify-user-controller");
+const {
+  redirect,
+  status,
+  getUser,
+  isNewUser,
+} = require("../controllers/spotify-user-controller");
 const authUser = require("../middleware/spotify-user-auth");
 
 const spotifyUserRoute = express.Router();
 
 //spotifyUserRoute.get('/login', authUser)
 spotifyUserRoute.get("/login", authUser, (req, res) => {
-  res.send("Home Page");
+  res.redirect("http://localhost:3000/feed");
 });
 spotifyUserRoute.get("/redirect", redirect);
+spotifyUserRoute.get("/status", status);
+spotifyUserRoute.get("/get-user", getUser);
+spotifyUserRoute.get("/new-user-status", isNewUser);
 
 module.exports = spotifyUserRoute;

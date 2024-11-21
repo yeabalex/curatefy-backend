@@ -13,4 +13,6 @@ postsRoute.post(
   new PostsController().createPost
 );
 
+postsRoute.get("/allPosts", PostsController.servePosts);
+
 module.exports = postsRoute;
