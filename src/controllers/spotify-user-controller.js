@@ -1,7 +1,7 @@
 const UserModel = require("../models/spotify-user-model");
 const dotenv = require("dotenv");
-const requestAccessToken = require("../services/access-token-auth");
-const getProfile = require("../services/user-profile");
+const AccessToken = require("../services/access-token");
+const getProfile = require("../services/user/user-profile");
 const requestURL = require("../constants/request-url");
 const redirectURL = require("../constants/redirect-url");
 const redisClient = require("../config/redis.config");
@@ -26,7 +26,7 @@ async function redirect(req, res) {
     try {
       let userData = null;
       try {
-        const token = await requestAccessToken(
+        const token = await new AccessToken().requestAuthCodeToken(
           code,
           state,
           `${requestURL}/api/v1/redirect`
@@ -85,12 +85,12 @@ async function getUser(req, res) {
 
 async function isNewUser(req, res) {
   try {
-    const data = await redisClient.get(req.session.user.spotifyId); // Await the result
+    const data = await redisClient.get(req.session.user.spotifyId);
     if (data) {
       const parsedData = JSON.parse(data);
       return res.send(!parsedData.has_completed_registration);
     } else {
-      return res.send("No data found in Redis");
+      return res.send("Unkown Error");
     }
   } catch (error) {
     return res.status(500).send(error.message);
