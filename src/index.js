@@ -43,7 +43,7 @@ app.use(
 //routes
 app.use("/api/v1", spotifyUserRoute);
 app.use("/api/v1/posts", postsRoute);
-app.use("/api/v1/search", searchRoute);
+app.use("/api/v1", searchRoute);
 
 app.get("/", (req, res) => {
   res.send("home");

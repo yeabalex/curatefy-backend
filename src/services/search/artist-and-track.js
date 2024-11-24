@@ -1,5 +1,4 @@
 const SpotifyRequest = require("../spotify-request");
-const sqsFomater = require("../../utils/search-query-string");
 
 class ArtistTrack extends SpotifyRequest {
   /**
@@ -14,9 +13,8 @@ class ArtistTrack extends SpotifyRequest {
     }
 
     try {
-      const formattedName = sqsFomater(name);
       const results = await super.makeSpotifyRequest("/search", {
-        q: formattedName,
+        q: name,
         type: "artist",
       });
 
@@ -42,9 +40,8 @@ class ArtistTrack extends SpotifyRequest {
     }
 
     try {
-      const formattedName = sqsFomater(name);
       const results = await super.makeSpotifyRequest("/search", {
-        q: formattedName,
+        q: name,
         type: "track",
       });
 
