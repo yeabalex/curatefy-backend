@@ -1,7 +1,7 @@
 //const { currUser } = require("../controllers/spotify-user-controller");
 const GetUser = require("./get-user-functions");
 const UserModel = require("../models/spotify-user-model");
-const { currUser } = require("../controllers/spotify-user-controller");
+const { currUser } = require("../controllers/user-auth-controller");
 
 async function checkFollow(id) {
   try {

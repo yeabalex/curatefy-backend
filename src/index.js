@@ -11,9 +11,10 @@ const cors = require("cors");
 const corsOptions = require("./config/cors.config");
 
 //routes
-const spotifyUserRoute = require("./routes/spotify-user-route");
+const spotifyUserRoute = require("./routes/user-auth-route");
 const postsRoute = require("./routes/posts-route");
 const searchRoute = require("./routes/search-route");
+const userRoute = require("./routes/user-route");
 
 dotenv.config();
 const app = express();
@@ -44,6 +45,7 @@ app.use(
 app.use("/api/v1", spotifyUserRoute);
 app.use("/api/v1/posts", postsRoute);
 app.use("/api/v1", searchRoute);
+app.use("/api/v1", userRoute);
 
 app.get("/", (req, res) => {
   res.send("home");
