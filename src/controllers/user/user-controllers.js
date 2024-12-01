@@ -32,13 +32,15 @@ class UserController {
         return res.status(400).json({ error: "No data provided for update" });
       }
 
-      const user = new GetUser({ spotifyId: "31uulbfjtgllz3d4p2hrce7awn6i" });
+      const user = new GetUser(await req.session.user);
       const userID = (await user.getUserBySpotifyID())._id;
 
+      const spotifyId = await req.session.user.spotifyId;
       const result = await UserService.updateUserField(
         userID,
         field,
-        updateData
+        updateData,
+        spotifyId
       );
 
       if (!result) {

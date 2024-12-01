@@ -15,6 +15,7 @@ const spotifyUserRoute = require("./routes/user-auth-route");
 const postsRoute = require("./routes/posts-route");
 const searchRoute = require("./routes/search-route");
 const userRoute = require("./routes/user-route");
+const { userRecommendationRoute } = require("./routes/recommendation-route");
 
 dotenv.config();
 const app = express();
@@ -41,15 +42,12 @@ app.use(
     },
   })
 );
-//routes
+//routes v1
 app.use("/api/v1", spotifyUserRoute);
 app.use("/api/v1/posts", postsRoute);
 app.use("/api/v1", searchRoute);
 app.use("/api/v1", userRoute);
-
-app.get("/", (req, res) => {
-  res.send("home");
-});
+app.use("/api/v1", userRecommendationRoute);
 
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);

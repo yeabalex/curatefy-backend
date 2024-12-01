@@ -1,4 +1,5 @@
 const User = require("../../models/spotify-user-model");
+const redisClient = require("../../config/redis.config");
 
 class UserService {
   /**
@@ -8,10 +9,23 @@ class UserService {
    * @param {Object} updateData - The data to update
    * @returns {Object|null} Updated user document or null if update fails
    */
-  static async updateUserField(userId, field, updateData) {
+  static async updateUserField(userId, field, updateData, spotifyId) {
     try {
       if (field === "followers" || field === "following") {
         return await this.handleFollowOperation(userId, updateData);
+      }
+
+      if (field === "preferences") {
+        const redisUserData = await redisClient.get(spotifyId);
+
+        if (redisUserData) {
+          console.log(redisUserData);
+          const parsedUserData = JSON.parse(redisUserData);
+
+          parsedUserData.has_completed_registration = true;
+
+          await redisClient.set(spotifyId, JSON.stringify(parsedUserData));
+        }
       }
 
       const updateOperation = { $set: { [field]: updateData } };
@@ -20,7 +34,6 @@ class UserService {
         updateOperation,
         { new: true, runValidators: true }
       );
-
       return updatedUser;
     } catch (error) {
       console.error(`Error updating ${field} for user ${userId}:`, error);
