@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const PostAlgorithms = require("../utils/post-algorithms");
-const checkFollow = require("../utils/check-if-user-follows-another-user");
 
 const postSchema = new mongoose.Schema(
   {
@@ -18,6 +16,10 @@ const postSchema = new mongoose.Schema(
       items: [{ type: mongoose.Schema.Types.ObjectId, ref: "PostComment" }],
     },
     hashTags: [{ type: mongoose.Schema.Types.String }],
+    author: {
+      author_name:{type: mongoose.Schema.Types.String, required: true},
+      author_image:{type: mongoose.Schema.Types.String, required: true}
+    }
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

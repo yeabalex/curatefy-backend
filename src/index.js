@@ -22,10 +22,6 @@ const app = express();
 const PORT = 3001;
 
 connectDB();
-
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors(corsOptions));
 app.use(
   session({
     store: new RedisStore({
@@ -42,9 +38,13 @@ app.use(
     },
   })
 );
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors(corsOptions));
+
 //routes v1
 app.use("/api/v1", spotifyUserRoute);
-app.use("/api/v1/posts", postsRoute);
+app.use("/api/v1", postsRoute);
 app.use("/api/v1", searchRoute);
 app.use("/api/v1", userRoute);
 app.use("/api/v1", userRecommendationRoute);

@@ -8,6 +8,8 @@ services:
       - NODE_ENV=development
       - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
       - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECERET_ACCESS_KEY}
     depends_on:
       - mongodb
     volumes:
