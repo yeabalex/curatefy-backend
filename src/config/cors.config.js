@@ -7,7 +7,7 @@ const corsOptions = (req, callback) => {
   const isWhitelisted = whitelist.includes(origin);
   const options = isWhitelisted
     ? { 
-        origin: whitelist,  
+        origin: "https://curatefy.vercel.app",  
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       }
