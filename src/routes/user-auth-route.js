@@ -11,7 +11,7 @@ const spotifyUserRoute = express.Router();
 
 //spotifyUserRoute.get('/login', authUser)
 spotifyUserRoute.get("/login", authUser, (req, res) => {
-  res.redirect("http://localhost:3000/feed");
+  res.redirect("https://curatefy.vercel.app/feed");
 });
 spotifyUserRoute.get("/redirect", redirect);
 spotifyUserRoute.get("/status", status);
