@@ -85,7 +85,7 @@ async function handleUserData(req, userData) {
 
 async function status(req, res) {
   try {
-    return req.session.user ? res.sendStatus(200) : res.sendStatus(403);
+    return await req.session.user ? res.sendStatus(200) : res.sendStatus(403);
   } catch (error) {
     console.error("Status check error:", error);
     return res.sendStatus(500);
