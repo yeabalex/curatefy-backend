@@ -7,10 +7,9 @@ const corsOptions = (req, callback) => {
   const isWhitelisted = whitelist.includes(origin);
   const options = isWhitelisted
     ? { 
-        origin: whitelist, 
+        origin: whitelist,  
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'Origin']
       }
     : { origin: false };
   callback(null, options);
