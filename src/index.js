@@ -28,7 +28,7 @@ app.use(
       client: redisClient,
       ttl: 86400,
     }),
-    secret: process.env.SESSION_SECRET || "default_secret",
+    secret: "default_secret",
     saveUninitialized: false,
     resave: false,
     cookie: {
@@ -36,6 +36,7 @@ app.use(
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: 'none',
+      domain:'.vercel.app'
     },
   })
 );
