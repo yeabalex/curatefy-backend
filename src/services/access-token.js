@@ -78,7 +78,7 @@ class AccessToken {
   async getAccessToken() {
     try {
       const token = await redisClient.get("token");
-      if (!token) {
+      if (token) {
         return JSON.parse(token);
       }
 

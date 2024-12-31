@@ -17,7 +17,7 @@ async function authUser(req, res, next) {
         response_type: "code",
         client_id: process.env.SPOTIFY_CLIENT_ID,
         scope: scope,
-        redirect_uri: "http://localhost:3001/api/v1/redirect",
+        redirect_uri: "https://curatefy-backend-production.up.railway.app//api/v1/redirect",
         state: state,
       })
   );
