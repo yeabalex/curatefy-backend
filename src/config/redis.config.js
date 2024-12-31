@@ -1,7 +1,7 @@
 const { createClient } = require("redis");
 
 const redisClient = createClient({
-  url: "nileredis-0cxykn.serverless.usw2.cache.amazonaws.com:6379",
+  url: "redis://nileredis-0cxykn.serverless.usw2.cache.amazonaws.com:6379",
 });
 redisClient
   .connect()
