@@ -22,6 +22,19 @@ const app = express();
 const PORT = 3001;
 
 connectDB();
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin === "https://curatefy.vercel.app" || origin === "http://localhost:3000") {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  }
+  next();
+});
+
+app.use(cors(corsOptions));
 app.set('trust proxy', 1)
 app.use(cors(corsOptions));
 app.use(cookieParser());
@@ -41,6 +54,7 @@ app.use(
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: 'none',
+      path: "/"
       //domain: '.vercel.app'
     },
   })
@@ -48,7 +62,16 @@ app.use(
 
 
 //routes 
-app.options('*', cors(corsOptions));
+app.options('*', (req, res) => {
+  const origin = req.headers.origin;
+  if (origin === "https://curatefy.vercel.app" || origin === "http://localhost:3000") {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  }
+  res.sendStatus(204);
+});
 app.use("/api/v1", spotifyUserRoute);
 app.use("/api/v1", postsRoute);
 app.use("/api/v1", searchRoute);
