@@ -22,6 +22,10 @@ const app = express();
 const PORT = 3001;
 
 connectDB();
+app.set('trust proxy', 1)
+app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(express.json());
 app.use(
   session({
     store: new RedisStore({
@@ -32,17 +36,15 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      secure: process.env.NODE_ENV==="production",
+      secure: true,  
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: 'none',
-      //domain:'.vercel.app'
+      domain: '.vercel.app'
     },
   })
 );
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors(corsOptions));
+
 
 //routes v1
 app.use("/api/v1", spotifyUserRoute);
