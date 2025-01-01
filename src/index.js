@@ -60,7 +60,34 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  // Security Headers
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; " +
+    "img-src 'self' data: https:; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+    "style-src 'self' 'unsafe-inline'; " +
+    "connect-src 'self' https://curatefy-backend-production.up.railway.app;"
+  );
+  
+  // CORS Headers
+  const origin = req.headers.origin;
+  if (["http://localhost:3000", "https://curatefy.vercel.app"].includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader(
+      'Access-Control-Allow-Headers', 
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+  }
+  
+  next();
+});
 
+// Then use cors middleware
+app.use(cors(corsOptions));
 //routes 
 app.options('*', (req, res) => {
   const origin = req.headers.origin;

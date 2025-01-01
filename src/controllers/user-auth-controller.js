@@ -13,23 +13,19 @@ async function redirect(req, res) {
     const state = req.query.state;
     const error = req.query.error;
 
-    // Handle error from Spotify OAuth
     if (error) {
       console.error("Spotify OAuth error:", error);
       return res.redirect(`${redirectURL}?error=${encodeURIComponent(error)}`);
     }
 
-    // Check if user is already logged in
     if (req.session.user) {
       return res.redirect(redirectURL);
     }
 
-    // Validate required parameters
     if (!state || !code) {
       return res.redirect("/api/v1/login");
     }
 
-    // Get access token and user profile
     const token = await new AccessToken().requestAuthCodeToken(
       code,
       state,
@@ -38,7 +34,6 @@ async function redirect(req, res) {
 
     const userProfile = await getProfile(token);
 
-    // Prepare user data
     const userData = {
       displayName: userProfile.display_name,
       email: userProfile.email,
@@ -46,10 +41,8 @@ async function redirect(req, res) {
       image: userProfile.images[0]?.url || null,
     };
 
-    // Handle user session and database operations
     await handleUserData(req, userData);
 
-    // Redirect to frontend
     return res.redirect(redirectURL);
   } catch (error) {
     console.error("Redirect error:", error);
@@ -60,20 +53,16 @@ async function redirect(req, res) {
 }
 
 async function handleUserData(req, userData) {
-  // Set session
   req.session.user = userData;
 
-  // Check if user exists
   const existingUser = await UserModel.findOne({
     spotifyId: userData.spotifyId,
   });
 
   if (!existingUser) {
-    // Create new user
     const newUser = new UserModel(userData);
     await newUser.save();
 
-    // Set Redis data for new user
     await redisClient.set(
       userData.spotifyId,
       JSON.stringify({
