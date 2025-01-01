@@ -35,6 +35,7 @@ app.use(
     secret: "default_secret",
     saveUninitialized: false,
     resave: false,
+    proxy: true,
     cookie: {
       secure: true,  
       httpOnly: true,
@@ -46,7 +47,8 @@ app.use(
 );
 
 
-//routes v1
+//routes 
+app.options('*', cors(corsOptions));
 app.use("/api/v1", spotifyUserRoute);
 app.use("/api/v1", postsRoute);
 app.use("/api/v1", searchRoute);
