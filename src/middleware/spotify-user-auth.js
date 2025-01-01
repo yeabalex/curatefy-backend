@@ -8,6 +8,12 @@ async function authUser(req, res, next) {
   const scope = "user-read-email user-read-private";
 
   if (await req.session.user) {
+    res.cookie("sess", req.session.id, {
+      secure: true, 
+      httpOnly: true, 
+      sameSite: "none", 
+      maxAge: 1000 * 60 * 60 * 24, 
+    });
     return next();
   }
 
