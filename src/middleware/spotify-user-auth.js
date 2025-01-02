@@ -1,7 +1,6 @@
 const dotenv = require("dotenv");
 const generateRandomString = require("../utils/generate-random-string");
 const querystring = require("querystring");
-const redirectURL = require("../constants/redirect-url")
 dotenv.config();
 
 async function authUser(req, res, next) {
@@ -9,7 +8,7 @@ async function authUser(req, res, next) {
   const scope = "user-read-email user-read-private";
 
   if (await req.session.user) {
-    return next()
+    return next();
   }
 
   res.redirect(
