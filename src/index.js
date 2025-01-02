@@ -56,6 +56,7 @@ app.use(express.json());
 
 //routes 
 app.get("/", (req, res)=>{
+  req.session.visited = true;
   res.sendStatus(200)
 })
 app.use("/api/v1", spotifyUserRoute);
