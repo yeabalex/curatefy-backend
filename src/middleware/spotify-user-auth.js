@@ -9,7 +9,7 @@ async function authUser(req, res, next) {
   const scope = "user-read-email user-read-private";
 
   if (await req.session.user) {
-    return res.redirect(redirectURL)
+    return next()
   }
 
   res.redirect(
