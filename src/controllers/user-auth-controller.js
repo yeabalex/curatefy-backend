@@ -97,10 +97,6 @@ async function isNewUser(req, res) {
       return res.status(403).send("User not authenticated");
     }
 
-    const data = await redisClient.get(req.session.user.spotifyId);
-    if (!data) {
-      return res.status(404).send("User data not found");
-    }
 
     const parsedData = JSON.parse(data);
     return res.json({ isNew: !parsedData.has_completed_registration });
