@@ -19,12 +19,7 @@ async function redirect(req, res) {
     }
 
     if (req.session.user) {
-      res.cookie("sess", req.session.id, {
-        secure: true, 
-        httpOnly: true, 
-        sameSite: "none", 
-        maxAge: 1000 * 60 * 60 * 24, 
-      });
+      
       return res.redirect(redirectURL);
     }
 
@@ -60,12 +55,6 @@ async function redirect(req, res) {
 
 async function handleUserData(req, userData) {
   req.session.user = userData;
-  res.cookie("sess", req.session.id, {
-    secure: true, 
-    httpOnly: true, 
-    sameSite: "none", 
-    maxAge: 1000 * 60 * 60 * 24, 
-  });
 
   const existingUser = await UserModel.findOne({
     spotifyId: userData.spotifyId,

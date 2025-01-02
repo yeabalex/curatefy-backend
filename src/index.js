@@ -55,6 +55,9 @@ app.use(express.json());
 
 
 //routes 
+app.get("/", (req, res)=>{
+  res.sendStatus(200)
+})
 app.use("/api/v1", spotifyUserRoute);
 app.use("/api/v1", postsRoute);
 app.use("/api/v1", searchRoute);
