@@ -18,10 +18,6 @@ async function redirect(req, res) {
       return res.redirect(`${redirectURL}?error=${encodeURIComponent(error)}`);
     }
 
-    if (req.session.user) {
-      
-      return res.redirect(redirectURL);
-    }
 
     if (!state || !code) {
       return res.redirect("/api/v1/login");

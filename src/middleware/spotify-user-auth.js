@@ -7,10 +7,6 @@ async function authUser(req, res, next) {
   const state = generateRandomString(16);
   const scope = "user-read-email user-read-private";
 
-  if (await req.session.user) {
-    
-    return next();
-  }
 
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
