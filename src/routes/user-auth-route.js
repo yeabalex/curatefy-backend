@@ -10,9 +10,7 @@ const authUser = require("../middleware/spotify-user-auth");
 const spotifyUserRoute = express.Router();
 
 //spotifyUserRoute.get('/login', authUser)
-spotifyUserRoute.get("/login", authUser, (req, res) => {
-  res.redirect("https://curatefy.vercel.app/feed");
-});
+spotifyUserRoute.get("/login", authUser);
 spotifyUserRoute.get("/redirect", redirect);
 spotifyUserRoute.get("/status", status);
 spotifyUserRoute.get("/get-user", getUser);
